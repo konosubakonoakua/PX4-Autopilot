@@ -103,15 +103,6 @@ void Ekf::initialiseCovariance()
 
 void Ekf::predictCovariance(const imuSample &imu_delayed)
 {
-
-#if defined(CONFIG_EKF2_MAGNETOMETER)
-	// mag_I, mag_B: clear covariances if inactive
-	if (!_control_status.flags.mag) {
-		P.uncorrelateCovarianceBlock<State::mag_I.dof>(State::mag_I.idx);
-		P.uncorrelateCovarianceBlock<State::mag_B.dof>(State::mag_B.idx);
-	}
-#endif // CONFIG_EKF2_MAGNETOMETER
-
 #if defined(CONFIG_EKF2_WIND)
 	// wind_vel: clear covariances if inactive
 	if (!_control_status.flags.wind) {
