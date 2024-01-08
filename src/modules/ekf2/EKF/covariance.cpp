@@ -103,19 +103,6 @@ void Ekf::initialiseCovariance()
 
 void Ekf::predictCovariance(const imuSample &imu_delayed)
 {
-	// gyro_bias: clear covariances if inhibited
-	for (unsigned index = 0; index < State::gyro_bias.dof; index++) {
-		if (_gyro_bias_inhibit[index]) {
-			P.uncorrelateCovariance<1>(State::gyro_bias.idx + index);
-		}
-	}
-
-	// accel_bias: clear covariances if inhibited
-	for (unsigned index = 0; index < State::accel_bias.dof; index++) {
-		if (_accel_bias_inhibit[index]) {
-			P.uncorrelateCovariance<1>(State::accel_bias.idx + index);
-		}
-	}
 
 #if defined(CONFIG_EKF2_MAGNETOMETER)
 	// mag_I, mag_B: clear covariances if inactive
@@ -172,6 +159,9 @@ void Ekf::predictCovariance(const imuSample &imu_delayed)
 
 			if (!_gyro_bias_inhibit[index]) {
 				P(i, i) += gyro_bias_process_noise;
+
+			} else {
+				P.uncorrelateCovariance<1>(State::gyro_bias.idx + index);
 			}
 		}
 	}
@@ -186,6 +176,9 @@ void Ekf::predictCovariance(const imuSample &imu_delayed)
 
 			if (!_accel_bias_inhibit[index]) {
 				P(i, i) += accel_bias_process_noise;
+
+			} else {
+				P.uncorrelateCovariance<1>(State::accel_bias.idx + index);
 			}
 		}
 	}
