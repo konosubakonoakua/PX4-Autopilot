@@ -103,13 +103,6 @@ void Ekf::initialiseCovariance()
 
 void Ekf::predictCovariance(const imuSample &imu_delayed)
 {
-#if defined(CONFIG_EKF2_WIND)
-	// wind_vel: clear covariances if inactive
-	if (!_control_status.flags.wind) {
-		P.uncorrelateCovarianceBlock<State::wind_vel.dof>(State::wind_vel.idx);
-	}
-#endif // CONFIG_EKF2_WIND
-
 	// predict the covariance
 	const float dt = 0.5f * (imu_delayed.delta_vel_dt + imu_delayed.delta_ang_dt);
 
