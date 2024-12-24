@@ -32,13 +32,8 @@
 ############################################################################
 
 # Find the gz_Transport library
-# First look for GZ Harmonic libraries
-find_package(gz-transport NAMES gz-transport13)
-
-# If Harmonic not found, look for GZ Garden libraries
-if(NOT gz-transport_FOUND)
-	find_package(gz-transport NAMES gz-transport12)
-endif()
+# Look for GZ Ionic or Harmonic
+find_package(gz-transport NAMES gz-transport14 gz-transport13)
 
 if(gz-transport_FOUND)
 
@@ -66,6 +61,8 @@ if(gz-transport_FOUND)
 			GZMixingInterfaceServo.hpp
 			GZMixingInterfaceWheel.cpp
 			GZMixingInterfaceWheel.hpp
+			GZGimbal.cpp
+			GZGimbal.hpp
 		DEPENDS
 			mixer_module
 			px4_work_queue
@@ -92,6 +89,10 @@ if(gz-transport_FOUND)
 		default
 		windy
 		baylands
+  		lawn
+		aruco
+		rover
+		walls
 	)
 
 	# find corresponding airframes
